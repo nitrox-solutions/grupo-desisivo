@@ -1,0 +1,18 @@
+# Datos de hosting / infraestructura — NUNCA subir a un repo público
+NEUBOX.txt
+
+# Notas internas de trabajo (incluye planes del cliente aún no anunciados)
+portafolio-contenido.md
+
+# Archivos fuente de logos y portafolio (material de trabajo, no del sitio)
+1.jpeg
+2.jpeg
+Grupo Desisivo.jpeg
+
+# Captura de referencia de multiva.com.mx (marca de terceros, no usada por el sitio)
+assets/image.png
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
