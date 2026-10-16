@@ -231,18 +231,15 @@ header.site-header {
   gap: 12px;
 }
 
-/* logo oficial del grupo */
+/* logo oficial del grupo: variante clara/oscura, se alterna sin JS */
 .brand-logo {
   height: 46px;
   width: auto;
   display: block;
 }
-/* en modo oscuro el navy del logo se pierde: va sobre chip blanco */
-:root[data-theme="dark"] .brand-logo {
-  background: #fff;
-  padding: 5px 9px;
-  border-radius: 8px;
-}
+.brand-logo-dark { display: none; }
+:root[data-theme="dark"] .brand-logo-light { display: none; }
+:root[data-theme="dark"] .brand-logo-dark { display: block; }
 
 .brand-mark {
   width: 42px;
@@ -760,13 +757,10 @@ footer.site-footer {
   margin-bottom: 22px;
 }
 /* logo oficial sobre chip blanco: el hero es oscuro y el navy del logo se perderia */
+/* logo ya viene en su variante clara (blanco + teal): el hero siempre es oscuro, no necesita caja */
 .company-hero .company-logo {
   height: 62px;
   width: auto;
-  background: #fff;
-  padding: 10px 16px;
-  border-radius: 10px;
-  box-shadow: 0 10px 26px -14px rgba(0,0,0,.5);
 }
 .company-hero .company-slogan {
   color: rgba(255,255,255,.88);
@@ -861,14 +855,13 @@ footer.site-footer {
   /* header */
   .header-inner { min-height: 60px; padding: 8px 18px; }
   .brand-logo { height: 32px; }
-  :root[data-theme="dark"] .brand-logo { padding: 4px 7px; }
   .brand-mark { width: 36px; height: 36px; }
   .brand-text .desisivo { font-size: 1.08rem; }
   .brand-text .grupo { font-size: .56rem; letter-spacing: .18em; }
   .menu-toggle { padding: 10px 6px; }
 
   /* logo de empresa en su pagina */
-  .company-hero .company-logo { height: 46px; padding: 8px 12px; }
+  .company-hero .company-logo { height: 46px; }
   .company-hero .company-slogan { font-size: .88rem; }
 
   /* menú desplegable anclado al header.
