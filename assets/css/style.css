@@ -191,6 +191,53 @@ li { margin-bottom: .4em; }
 }
 .theme-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ---------- menú de opciones de correo ---------- */
+.mail-menu {
+  position: fixed;
+  z-index: 300;
+  width: 280px;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--gray-light);
+  border-radius: 12px;
+  box-shadow: 0 22px 48px -18px rgba(7,20,36,.45);
+  font-family: var(--font);
+}
+.mail-menu[hidden] { display: none; }
+.mail-menu-title {
+  margin: 4px 10px 8px;
+  font-size: .78rem;
+  color: var(--gray);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.mail-menu-title b { color: var(--heading); font-weight: 600; }
+.mail-menu a,
+.mail-menu button {
+  display: block;
+  width: 100%;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--heading);
+  font: 600 .88rem/1.3 var(--font);
+  text-align: left;
+  cursor: pointer;
+}
+.mail-menu a:hover, .mail-menu a:focus-visible,
+.mail-menu button:hover, .mail-menu button:focus-visible {
+  background: var(--teal-pale);
+  color: var(--teal);
+  outline: none;
+}
+.mail-menu.sheet {
+  left: 12px; right: 12px; bottom: 12px; top: auto;
+  width: auto;
+  padding: 10px;
+}
+.mail-menu.sheet a, .mail-menu.sheet button { padding: 14px 12px; font-size: .95rem; }
+
 /* ---------- barra de progreso ---------- */
 .scroll-progress {
   position: fixed;
@@ -248,12 +295,17 @@ header.site-header {
   width: auto;
   display: block;
 }
-/* variante por tema: .logo-light en fondo claro, .logo-dark (letras blancas) en fondo oscuro */
-.brand-logo-dark, .logo-dark { display: none; }
-:root[data-theme="dark"] .brand-logo-light,
-:root[data-theme="dark"] .logo-light { display: none; }
-:root[data-theme="dark"] .brand-logo-dark,
-:root[data-theme="dark"] .logo-dark { display: block; }
+/* Los logos autorizados nunca se recolorean. En modo oscuro la barra pasa a gris plateado
+   (redefiniendo las variables solo dentro del header) para que el navy y el turquesa
+   originales del logo resalten; el logo no cambia de tamaño ni de posición entre temas. */
+:root[data-theme="dark"] header.site-header {
+  --header-bg: rgba(228,233,238,.97);
+  --surface: #e4e9ee;
+  --heading: #0b2b4c;
+  --gray-light: #cdd5dd;
+  --teal-pale: #d2ebe6;
+  box-shadow: 0 10px 26px -18px rgba(0,0,0,.7);
+}
 
 .brand-mark {
   width: 42px;
@@ -468,6 +520,8 @@ nav.main-nav a.active { color: var(--teal); }
   color: var(--heading);
 }
 .trust-strip .stat span { font-size: .8rem; color: var(--gray); }
+.trust-strip .stat-link span { color: var(--teal); font-weight: 600; }
+.trust-strip .stat-link:hover span { text-decoration: underline; }
 
 /* ---------- section titles ---------- */
 .section {
@@ -602,6 +656,46 @@ nav.main-nav a.active { color: var(--teal); }
 }
 .media-card img { width: 100%; height: 420px; object-fit: cover; }
 
+/* ---------- servicios especializados (REPSE) ---------- */
+.specialized { background: var(--surface); transition: background-color .35s ease; }
+.specialized-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.spec-card {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 22px 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-light);
+  border-top: 3px solid var(--teal);
+  background: var(--off-white);
+  transition: box-shadow .2s ease, transform .2s ease, background-color .35s ease;
+}
+.spec-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+.spec-code {
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--teal-pale);
+  color: var(--teal);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+.spec-card h3 { font-size: 1.02rem; margin-bottom: 8px; }
+.spec-card p { font-size: .88rem; flex: 1; margin-bottom: 16px; }
+.spec-owner {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--teal);
+  align-self: flex-start;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
 /* ---------- proceso / cómo trabajamos ---------- */
 .process-band {
   background: var(--navy-deep);
@@ -693,6 +787,13 @@ nav.main-nav a.active { color: var(--teal); }
   max-width: 640px;
   height: auto;
 }
+/* en modo oscuro el contenedor se vuelve placa blanca: el logo conserva sus colores originales */
+:root[data-theme="dark"] .brand-composite {
+  max-width: 700px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 20px 44px -22px rgba(0,0,0,.7);
+}
 @media (max-width: 760px) {
   .brand-composite { margin: 4px auto 28px; padding: 12px 8px; }
 }
@@ -702,63 +803,52 @@ nav.main-nav a.active { color: var(--teal); }
   background: var(--surface);
   transition: background-color .35s ease;
 }
-.client-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 18px;
+/* filas centradas: se ve completa con 2 logos y crece sola al agregar más */
+.client-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
   max-width: 1080px;
   margin: 0 auto;
 }
-.client-slot {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: var(--off-white);
-  border: 1px dashed var(--gray-light);
-  border-radius: 10px;
+.client-tile {
+  flex: 0 1 300px;
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--gray-light);
+  background: var(--surface);
+  box-shadow: 0 2px 10px -4px rgba(11,43,76,.15);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+.client-tile:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
+/* el área del logo usa el fondo original de cada marca: sus colores nunca se alteran */
+.client-tile-logo {
+  height: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+  padding: 22px 28px;
 }
-.client-slot:hover {
-  border-color: var(--teal);
-  background: var(--teal-pale);
-  transform: translateY(-2px);
-}
-.client-slot-label {
-  font-family: var(--font);
-  font-size: .72rem;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--gray);
-  opacity: .55;
-}
-/* cuando lleguen los logos reales: <img class="client-logo"> dentro del slot */
-.client-slot img.client-logo {
-  max-width: 70%;
-  max-height: 60%;
+.client-tile.on-light .client-tile-logo { background: #ffffff; }
+.client-tile.on-navy .client-tile-logo { background: #142f4c; }
+.client-tile-logo img {
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  filter: grayscale(1);
-  opacity: .72;
-  transition: filter .25s ease, opacity .25s ease;
+  transition: transform .35s ease;
 }
-.client-slot:hover img.client-logo {
-  filter: grayscale(0);
-  opacity: 1;
+.client-tile:hover .client-tile-logo img { transform: scale(1.04); }
+.client-tile figcaption {
+  padding: 14px 18px 16px;
+  border-top: 1px solid var(--gray-light);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-.client-slot:has(img.client-logo) .client-slot-label { display: none; }
-.client-slot:has(img.client-logo) {
-  background: transparent;
-  border-style: solid;
-  border-color: var(--gray-light);
-}
-:root[data-theme="dark"] .client-slot {
-  background: rgba(255,255,255,.03);
-  border-color: var(--gray-light);
-}
-:root[data-theme="dark"] .client-slot-label { color: rgba(255,255,255,.5); }
+.client-tile figcaption b { color: var(--heading); font-size: .95rem; }
+.client-tile figcaption span { color: var(--gray); font-size: .8rem; }
 
 /* ---------- panel oscuro contacto ---------- */
 .cta-band {
@@ -811,12 +901,15 @@ footer.site-footer {
 .footer-grid li { margin-bottom: 10px; font-size: .9rem; color: rgba(255,255,255,.62); }
 .footer-grid a { color: rgba(255,255,255,.62); font-size: .9rem; overflow-wrap: anywhere; }
 .footer-grid a:hover { color: var(--teal-light); }
-/* el footer siempre es oscuro: logo autorizado en su versión de letras blancas */
+/* el footer siempre es oscuro: logo autorizado en placa blanca */
 .footer-logo {
   width: 100%;
-  max-width: 250px;
+  max-width: 262px;
   height: auto;
   display: block;
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 12px;
 }
 .footer-bottom {
   display: flex;
@@ -851,10 +944,15 @@ footer.site-footer {
   gap: 22px;
   margin-bottom: 26px;
 }
-/* el hero siempre es oscuro: se usa la variante -dark del logo autorizado */
+/* el hero siempre es oscuro: logo autorizado en sus colores originales sobre placa blanca */
 .company-hero .company-logo {
-  height: 84px;
+  height: 72px;
   width: auto;
+  box-sizing: content-box;
+  padding: 12px 18px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 14px 30px -16px rgba(0,0,0,.6);
 }
 /* eslogan con el mismo tratamiento del lockup autorizado: mayúsculas espaciadas tras un divisor */
 .company-hero .company-slogan {
@@ -1000,7 +1098,7 @@ footer.site-footer {
   .showcase img { height: 300px; }
   .showcase-overlay { position: static; transform: none; width: 100%; border-radius: 0; }
   .process-grid { grid-template-columns: 1fr 1fr; }
-  .client-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .specialized-grid { grid-template-columns: 1fr 1fr; }
 }
 
 /* teléfonos */
@@ -1016,7 +1114,7 @@ footer.site-footer {
   .menu-toggle { padding: 10px 6px; }
 
   /* logo de empresa en su pagina */
-  .company-hero .company-logo { height: 62px; }
+  .company-hero .company-logo { height: 52px; padding: 9px 13px; border-radius: 12px; }
   .company-hero .company-slogan { font-size: .68rem; padding-left: 14px; max-width: 170px; }
 
   /* menú desplegable anclado al header.
@@ -1100,7 +1198,10 @@ footer.site-footer {
 
   /* proceso */
   .process-grid { grid-template-columns: 1fr; gap: 16px; }
-  .client-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .client-row { gap: 16px; }
+  .client-tile { flex-basis: 100%; max-width: 360px; }
+  .client-tile-logo { height: 150px; }
+  .specialized-grid { grid-template-columns: 1fr; gap: 16px; }
   .process-step { padding: 22px 20px; }
   .process-step .step-num { font-size: 1.6rem; }
 
